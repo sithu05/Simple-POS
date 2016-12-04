@@ -207,7 +207,12 @@
             	}).then(function () {
             		vm.$http.delete('/category/' + category.id).then(response => {
             			vm.getCategories();
-            		});
+            		}).catch(response => {
+                        swal({
+                            type: 'warning',
+                            text: response.data.message
+                        });
+                    });
             	}, function () {});
             }
         }

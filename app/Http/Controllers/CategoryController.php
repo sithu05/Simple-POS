@@ -87,8 +87,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
+        $category = Category::withCount('products')->findOrFail($id);
 
-        return response()->json(['status' => true]);
+        if ($category->products_count > 0) {
+            return response()->json(['message' => "There is $category->products_count products. Can't Delete yet."], 403);
+        } else {
+            $category->delete();
+
+            return response()->json(['status' => true]);    
+        }
     }
 }
