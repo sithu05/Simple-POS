@@ -16,6 +16,7 @@ require('./bootstrap');
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('category', require('./components/Category.vue'));
 Vue.component('car', require('./components/Car.vue'));
+Vue.component('product', require('./components/Product.vue'));
 
 const app = new Vue({
     el: '#app'

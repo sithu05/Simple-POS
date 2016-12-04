@@ -51,6 +51,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+        if ($id > 0) {
+            return Category::where('status', 1)->get();
+        }
+
         return Category::all();
     }
 
