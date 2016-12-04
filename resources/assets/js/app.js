@@ -18,6 +18,7 @@ Vue.component('category', require('./components/Category.vue'));
 Vue.component('car', require('./components/Car.vue'));
 Vue.component('product', require('./components/Product.vue'));
 Vue.component('supplier', require('./components/Supplier.vue'));
+Vue.component('customer', require('./components/Customer.vue'));
 
 const app = new Vue({
     el: '#app'

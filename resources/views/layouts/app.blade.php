@@ -60,6 +60,7 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('customer') }}">Customers</a></li>
                                     <li><a href="{{ url('supplier') }}">Suppliers</a></li>
                                     <li><a href="{{ url('product') }}">Products</a></li>
                                     <li><a href="{{ url('category') }}">Categories</a></li>

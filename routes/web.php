@@ -27,3 +27,5 @@ Route::resource('car', 'CarController', ['except' => ['create', 'edit']]);
 Route::resource('product', 'ProductController', ['except' => ['create', 'edit']]);
 
 Route::resource('supplier', 'SupplierController', ['except' => ['create', 'edit']]);
+
+Route::resource('customer', 'CustomerController', ['except' => ['create', 'edit']]);
