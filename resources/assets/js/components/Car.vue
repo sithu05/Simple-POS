@@ -14,7 +14,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                    	Categories Management
+                    	Cars Management
                     	<button class="btn btn-primary btn-sm pull-right" @click="showForm()">Add New</button>
                 	</div>
 
@@ -23,23 +23,23 @@
 							<thead>
 								<tr>
 		                    		<th>#</th>
-		                    		<th>Name</th>
+		                    		<th>Car No</th>
 		                    		<th>Status</th>
 		                    		<th>Actions</th>
 		                    	</tr>	
 							</thead>
 	                    	
 	                    	<tbody>
-	                    		<tr v-for="category in categories">
-		                    		<td>{{ category.id }}</td>
-		                    		<td>{{ category.name }}</td>
+	                    		<tr v-for="car in cars">
+		                    		<td>{{ car.id }}</td>
+		                    		<td>{{ car.car_no }}</td>
 		                    		<td>
-		                    			<label class="label label-sm label-primary" v-if="category.status == 1">Yes</label>
+		                    			<label class="label label-sm label-primary" v-if="car.status == 1">Yes</label>
 		                    			<label class="label label-sm label-danger" v-else>No</label>
 	                    			</td>
 		                    		<td>
-		                    			<button class="btn btn-sm btn-info action-link" @click="showForm(category)">Edit</button>
-		                    			<button class="btn btn-sm btn-danger action-link" @click="destroy(category)">Del</button>
+		                    			<button class="btn btn-sm btn-info action-link" @click="showForm(car)">Edit</button>
+		                    			<button class="btn btn-sm btn-danger action-link" @click="destroy(car)">Del</button>
 		                    		</td>
 		                    	</tr>
 	                    	</tbody>
@@ -54,17 +54,17 @@
                 			<div class="modal-header">
                 				<button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-		                        <h4 class="modal-title" v-if="category.id == 0">Create New Category</h4>
-		                        <h4 class="modal-title" v-if="category.id > 0">Edit Category</h4>
+		                        <h4 class="modal-title" v-if="car.id == 0">Create New Car</h4>
+		                        <h4 class="modal-title" v-if="car.id > 0">Edit Car</h4>
                 			</div>
 
                 			<div class="modal-body">
                 				<!-- Form Errors -->
-		                        <div class="alert alert-danger" v-if="category.errors.length > 0">
+		                        <div class="alert alert-danger" v-if="car.errors.length > 0">
 		                            <p><strong>Whoops!</strong> Something went wrong!</p>
 		                            <br>
 		                            <ul>
-		                                <li v-for="error in category.errors">
+		                                <li v-for="error in car.errors">
 		                                    {{ error }}
 		                                </li>
 		                            </ul>
@@ -76,7 +76,7 @@
 		                                <label class="col-md-3 control-label">Name</label>
 
 		                                <div class="col-md-7">
-		                                    <input type="text" class="form-control" id="category_name" v-model="category.name">
+		                                    <input type="text" class="form-control" id="car_no" v-model="car.car_no">
 		                                </div>
 		                            </div>
 
@@ -85,7 +85,7 @@
 		                            	<label class="col-md-3 control-label">Status</label>
 
 		                            	<div class="col-md-7">
-		                            		<input type="checkbox" value="1" v-model="category.status">
+		                            		<input type="checkbox" value="1" v-model="car.status">
 		                            	</div>
 		                            </div>
 
@@ -97,7 +97,7 @@
 		                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 		                        <button type="button" class="btn btn-primary" @click="update()">
-		                            {{ category.id == 0 ? 'Create' : 'Update' }}
+                                    {{ car.id == 0 ? 'Create' : 'Update' }}
 		                        </button>
 		                    </div>
                 		</div>
@@ -112,9 +112,9 @@
 	export default {
 		data() {
 			return {
-				categories: [],
-				category: {
-					name: '',
+				cars: [],
+				car: {
+					car_no: '',
 					status: 0,
 					errors: []
 				}
@@ -129,22 +129,22 @@
         	/**
         	 * Get All Category
         	 */
-        	getCategories() {
-        		this.$http.get('/category/0').then(response => {
-        			this.categories = response.data;
+        	getCars() {
+        		this.$http.get('/car/0').then(response => {
+        			this.cars = response.data;
         		});
         	},
 
         	/**
         	 * Show Popup Modal
         	 */
-        	showForm(category) {
+        	showForm(car) {
 
-        		if (category == null) {
-        			this.category = { id: 0, name: '', status: 0, errors: [] };
+        		if (car == null) {
+        			this.car = { id: 0, car_no: '', status: 0, errors: [] };
         		} else {
-        			this.category = category;
-        			this.category.errors = [];
+        			this.car = car;
+        			this.car.errors = [];
         		}
 
         		$('#modal_form').modal('show');
@@ -154,10 +154,10 @@
         	 * Prepare the component
         	 */
         	prepareComponent() {
-        		this.getCategories();
+        		this.getCars();
 
         		$('#modal_form').on('shown.bs.modal', () => {
-        			$('#category_name').focus();
+        			$('#car_no').focus();
         		});
         	},
 
@@ -165,10 +165,10 @@
         	 * Update means create or update
         	 */
         	update() {
-        		if (this.category.id > 0) {
-        			this.persistClient('put', '/category/' + this.category.id, this.category, '#modal_form');
+        		if (this.car.id > 0) {
+        			this.persistClient('put', '/car/' + this.car.id, this.car, '#modal_form');
         		} else {
-        			this.persistClient('post', '/category', this.category, '#modal_form');
+        			this.persistClient('post', '/car', this.car, '#modal_form');
         		}
         	},
 
@@ -180,7 +180,7 @@
 
                 this.$http[method](uri, form)
                     .then(response => {
-                    	this.getCategories();
+                    	this.getCars();
 
                         form.errors = [];
 
@@ -192,11 +192,11 @@
                         } else {
                             form.errors = ['Something went wrong. Please try again.'];
                         }
-                        $('#category_name').focus();
+                        $('#car_no').focus();
                     });
             },
 
-            destroy(category) {
+            destroy(car) {
             	var vm = this;
 
             	swal({
@@ -205,8 +205,8 @@
             		showCancelButton: true,
             		confirmButtonText: 'Yes, delete it!'
             	}).then(function () {
-            		vm.$http.delete('/category/' + category.id).then(response => {
-            			vm.getCategories();
+            		vm.$http.delete('/car/' + car.id).then(response => {
+            			vm.getCars();
             		});
             	}, function () {});
             }

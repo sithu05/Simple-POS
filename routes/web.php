@@ -20,4 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 // Categories
-Route::resource('category', 'CategoryController');
+Route::resource('category', 'CategoryController', ['except' => ['create', 'edit']]);
+Route::resource('car', 'CarController', ['except' => ['create', 'edit']]);

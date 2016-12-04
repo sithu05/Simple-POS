@@ -61,6 +61,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ url('category') }}">Categories</a></li>
+                                    <li><a href="{{ url('car') }}">Cars</a></li>
                                 </ul>
                             </li>
 

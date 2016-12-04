@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Car;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CarController extends Controller
 {
 
     public function __construct()
@@ -20,7 +20,17 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category.index');
+        return view('car.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -32,13 +42,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'car_no' => 'required'
         ]);
 
-        $category         = new Category();
-        $category->name   = $request->input('name');
-        $category->status = $request->input('status');
-        $category->save();
+        $car = new Car();
+        $car->car_no = $request->input('car_no');
+        $car->status = $request->input('status');
+        $car->save();
 
         return response()->json(['status' => true]);
     }
@@ -51,7 +61,18 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        return Category::all();
+        return Car::all();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -64,13 +85,13 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'car_no' => 'required'
         ]);
 
-        $category         = Category::find($id);
-        $category->name   = $request->input('name');
-        $category->status = $request->input('status');
-        $category->save();
+        $car = Car::findOrFail($id);
+        $car->car_no = $request->input('car_no');
+        $car->status = $request->input('status');
+        $car->save();
 
         return response()->json(['status' => true]);
     }
@@ -83,7 +104,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::findOrFail($id)->delete();
+        Car::findOrFail($id)->delete();
 
         return response()->json(['status' => true]);
     }
