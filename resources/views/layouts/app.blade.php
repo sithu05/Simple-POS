@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <link href="/libs/datepicker/datepicker3.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -53,6 +54,10 @@
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
+                            
+                            <!-- Purchase -->
+                            <li><a href="{{ url('purchase') }}">Purchase</a></li>
+
                             <!-- Basic Setup Links -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -98,5 +103,6 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script src="/libs/datepicker/bootstrap-datepicker.js"></script>
 </body>
 </html>
