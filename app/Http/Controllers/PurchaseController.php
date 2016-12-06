@@ -131,6 +131,23 @@ class PurchaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $purchase = Purchase::find($id);
+
+        foreach($purchase->products as $detail) {
+            $stock = Stock::where('product_id', $detail->product_id)->first();
+            $stock->purchased -= $detail->quantity;
+            $stock->balance -= $detail->quantity;
+            $stock->save();
+
+            $detail->delete();
+        }
+
+        $supplier = Supplier::find($purchase->supplier_id);
+        $supplier->payable_amount -= $purchase->net_amount;
+        $supplier->save();
+
+        $purchase->delete();
+
+        return response()->json(['status' => true]);
     }
 }

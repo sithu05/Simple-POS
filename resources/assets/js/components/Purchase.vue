@@ -46,6 +46,7 @@
                                     <td>{{ purchase.net_amount }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info action-link" @click="showDetail(purchase)">Detail</button>
+                                        <button class="btn btn-sm btn-danger action-link" @click="destroy(purchase)">Del</button>
                                     </td>
                                 </tr>
 	                    	</tbody>
@@ -543,7 +544,7 @@
                 return moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
             },
 
-            destroy(supplier) {
+            destroy(purchase) {
             	var vm = this;
 
             	swal({
@@ -552,8 +553,8 @@
             		showCancelButton: true,
             		confirmButtonText: 'Yes, delete it!'
             	}).then(function () {
-            		vm.$http.delete('/supplier/' + supplier.id).then(response => {
-            			vm.getSuppliers();
+            		vm.$http.delete('/purchase/' + purchase.id).then(response => {
+            			vm.getPurchases();
             		});
             	}, function () {});
             }
