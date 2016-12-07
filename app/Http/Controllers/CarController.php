@@ -61,6 +61,10 @@ class CarController extends Controller
      */
     public function show($id)
     {
+        if ($id > 0) {
+            return Car::where('status', 1)->get();
+        }
+
         return Car::all();
     }
 

@@ -21,6 +21,7 @@ Vue.component('supplier', require('./components/Supplier.vue'));
 Vue.component('customer', require('./components/Customer.vue'));
 Vue.component('Purchase', require('./components/Purchase.vue'));
 Vue.component('Sale', require('./components/Sale.vue'));
+Vue.component('Stock', require('./components/Stock.vue'));
 
 Vue.config.debug = true;
 

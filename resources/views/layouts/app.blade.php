@@ -55,6 +55,9 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             
+                            <!-- Stock -->
+                            <li><a href="{{ url('stock') }}">Stock</a></li>
+
                             <!-- Sale -->
                             <li><a href="{{ url('sale') }}">Sale</a></li>
 
