@@ -20,6 +20,9 @@ Vue.component('product', require('./components/Product.vue'));
 Vue.component('supplier', require('./components/Supplier.vue'));
 Vue.component('customer', require('./components/Customer.vue'));
 Vue.component('Purchase', require('./components/Purchase.vue'));
+Vue.component('Sale', require('./components/Sale.vue'));
+
+Vue.config.debug = true;
 
 const app = new Vue({
     el: '#app'

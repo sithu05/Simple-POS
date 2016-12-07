@@ -9,34 +9,34 @@
 </style>
 
 <template>
-	<div class="container">
+    <div class="container">
         <div class="row purchase_list">
-            <div class="col-md-12 ">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                    	Purchase Management
-                    	<button class="btn btn-primary btn-sm pull-right" @click="showCreateOrUpdateForm()">Add New</button>
-                	</div>
-
+                        Purchase Management
+                        <button class="btn btn-primary btn-sm pull-right" @click="createNew()">Add New</button>
+                    </div>
+                    
                     <div class="panel-body">
                         <h4>Purchase Management</h4> <hr/>
-                        
-						<table class="table table-striped m-b-none">
-							<thead>
-								<tr>
-		                    		<th>#</th>
-		                    		<th>Voucher No</th>
+
+                        <table class="table table-striped m-b-none">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Voucher No</th>
                                     <th>Purchased Date</th>
                                     <th>Total Amount</th>
                                     <th>Discount</th>
                                     <th>Paid Amount</th>
                                     <th>Net Amount</th>
-		                    		<th>Actions</th>
-		                    	</tr>	
-							</thead>
-	                    	
-	                    	<tbody>
-	                    		<tr v-for="purchase in purchases">
+                                    <th>Actions</th>
+                                </tr>   
+                            </thead>
+                            
+                            <tbody>
+                                <tr v-for="purchase in purchases">
                                     <td>{{ purchase.id }}</td>
                                     <td>{{ purchase.voucher_no }}</td>
                                     <td>{{ getCustomDateFormat(purchase.purchased_date) }}</td>
@@ -45,124 +45,26 @@
                                     <td>{{ purchase.received_amount }}</td>
                                     <td>{{ purchase.net_amount }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info action-link" @click="showDetail(purchase)">Detail</button>
+                                        <button class="btn btn-sm btn-info action-link" @click="showDetailProducts(purchase)">Detail</button>
                                         <button class="btn btn-sm btn-danger action-link" @click="destroy(purchase)">Del</button>
                                     </td>
-                                </tr>
-	                    	</tbody>
-	                    </table>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- /.row -->
-        
-        <!-- Show Detail Modal -->
-        <div class="modal fade" id="detail_modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
-                        <h4 class="modal-title">Purchase Detail</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <table class="table table-striped m-b-none">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Total Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="product in purchase.products">
-                                    <td>{{ product.product.name }}</td>
-                                    <td>{{ product.quantity }}</td>
-                                    <td>{{ product.unique_price }}</td>
-                                    <td>{{ product.total_amount }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Create & Edit Product Modal -->
-        <div class="modal fade" id="product_form" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
-                        <h4 class="modal-title">Add Product</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <!-- Form Errors -->
-                        <div class="alert alert-danger" v-if="product.errors.length > 0">
-                            <p><strong>Whoops!</strong> Something went wrong!</p>
-                            <br>
-                            <ul>
-                                <li v-for="error in product.errors">
-                                    {{ error }}
-                                </li>
-                            </ul>
-                        </div>
-
-                        <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Product</label>
-
-                                <div class="col-md-5">
-                                    <select class="form-control" id="product_id" v-model="product.id" v-on:change="getProductName(product.id)">
-                                        <option value="">Please Select</option>
-                                        <option v-for="product in products" v-bind:value="product.id">{{ product.name }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Quantity</label>
-
-                                <div class="col-md-5">
-                                    <input type="number" class="form-control" id="product_quantity" v-model="product.quantity">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Price</label>
-
-                                <div class="col-md-5">
-                                    <input type="number" class="form-control" v-model="product.price">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                     <!-- Modal Actions -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                        <button type="button" class="btn btn-primary" @click="addProduct()">
-                            Add
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </div> <!-- /.panel -->
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
 
         <div class="row purchase_form">
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        {{ purchase.id == 0 ? 'Create New Purchase' : 'Edit Purchase' }}
+                        Create New Purchase
                     </div>
 
                     <div class="panel-body">
-
+                        
                         <div class="alert alert-danger" v-if="purchase.errors.length > 0">
                             <p><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
@@ -174,12 +76,13 @@
                         </div>
 
                         <form class="form-horizontal" role="form">
+
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Supplier</label>
 
                                 <div class="col-md-5">
                                     <select class="form-control" id="supplier_id" v-model="purchase.supplier_id">
-                                        <option value="">Please Select</option>
+                                        <option>Please Select</option>
                                         <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{ supplier.name }}</option>
                                     </select>
                                 </div>
@@ -189,7 +92,7 @@
                                 <label class="col-md-2 control-label">Purchase Date</label>
 
                                 <div class="col-md-5">
-                                    <input type="text" class="form-control purchased_date" v-model="purchase.purchased_date" v-on:keyup="getDate()">
+                                    <input type="text" class="form-control purchased_date" v-model="purchase.purchased_date">
                                 </div>
                             </div>
 
@@ -258,11 +161,111 @@
                                     <button type="button" class="btn btn-primary" v-on:click="savePurchase()">Save</button>    
                                 </div>
                             </div>
+
                         </form>
                     </div>
 
                     <div class="panel-footer">
                         <button type="button" class="btn btn-sm btn-default" @click="backToList()">Close</button>
+                    </div>
+                </div>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+
+        <!-- Create & Edit Product Modal -->
+        <div class="modal fade" id="product_form" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                        <h4 class="modal-title">Add Product</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Form Errors -->
+                        <div class="alert alert-danger" v-if="product.errors.length > 0">
+                            <p><strong>Whoops!</strong> Something went wrong!</p>
+                            <br>
+                            <ul>
+                                <li v-for="error in product.errors">
+                                    {{ error }}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Product</label>
+
+                                <div class="col-md-5">
+                                    <select class="form-control" id="product_id" v-model="product.id" v-on:change="getProductName(product.id)">
+                                        <option value="">Please Select</option>
+                                        <option v-for="product in products" v-bind:value="product.id">{{ product.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Quantity</label>
+
+                                <div class="col-md-5">
+                                    <input type="number" class="form-control" id="product_quantity" v-model="product.quantity">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Price</label>
+
+                                <div class="col-md-5">
+                                    <input type="number" class="form-control" v-model="product.price">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                     <!-- Modal Actions -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                        <button type="button" class="btn btn-primary" @click="addProduct()">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Show Detail Modal -->
+        <div class="modal fade" id="detail_modal" tabindex="-1" role="dialog" v-if="showDetail">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                        <h4 class="modal-title">Purchase Detail</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table table-striped m-b-none">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="product in purchase.products">
+                                    <td>{{ product.product.name }}</td>
+                                    <td>{{ product.quantity }}</td>
+                                    <td>{{ product.unique_price }}</td>
+                                    <td>{{ product.total_amount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -271,44 +274,28 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				suppliers: [],
-                products: [],
+    export default {
+        data() {
+            return {
                 purchases: [],
+                suppliers: [],
+                products: [],
                 purchase: {
-                    id: 0,
                     errors: [],
-                    products: [],
-                    total_amount: 0,
-                    received_amount: 0,
-                    discount_amount: 0,
-                    net_amount: 0,
-                    supplier_id: '',
-                    purchased_date: ''
+                    products: []
                 },
                 product: {
-                    id: 0,
                     errors: []
-                }
-			};
-		},
+                },
+                showDetail: true
+            }
+        },
 
         mounted() {
             this.prepareComponent();
         },
 
         methods: {
-        	/**
-        	 * Get All Suppliers
-        	 */
-        	getSuppliers() {
-        		this.$http.get('/supplier/0').then(response => {
-        			this.suppliers = response.data;
-        		});
-        	},
-
             /**
              * Get All Purchases
              */
@@ -319,75 +306,39 @@
             },
 
             /**
-             * Calc Amount
+             * Prepare Component
              */
-            calcAmount() {
-                this.calc_amount;
-            },
-
-            /**
-             * Get Purchase Date
-             */
-            getDate() {
-                var temp = $('.purchased_date').val();
-                console.log('Data ' + temp);
-            },
-
-        	/**
-        	 * Show Popup Modal
-        	 */
-        	showForm(supplier) {        		
-    			if (supplier == null) {
-        			this.supplier = { id: 0, name: '', is_active: 0, errors: [] };
-        		} else {
-        			this.supplier = supplier;
-        			this.supplier.errors = [];
-        		}
-
-        		$('#modal_form').modal('show');
-        	},
-
-        	/**
-        	 * Prepare the component
-        	 */
-        	prepareComponent() {
-
-                $('.purchase_form').hide();
+            prepareComponent() {
                 this.getPurchases();
 
-        		$('#modal_form').on('shown.bs.modal', () => {
-        			$('#supplier_name').focus();
-        		});
+                $('.purchase_form').hide();
 
                 $('#product_form').on('shown.bs.modal', () => {
                     $('#product_id').focus();
                 });
-        	},
+            },
 
             /**
-             * Show New Panel
-             * 
-             * @return mixed
+             * Create New Purchase Form
              */
-            showCreateOrUpdateForm(purchase) {
+            createNew() {
                 var vm = this;
 
-                this.$http.get('supplier/1').then(response => {
-                    this.suppliers = response.data;
+                this.showDetail = false;
 
-                    if (purchase == null) {
-                        this.purchase = {
-                            id: 0,
-                            errors: [],
-                            products: [],
-                            total_amount: 0,
-                            received_amount: 0,
-                            discount_amount: 0,
-                            net_amount: 0,
-                            supplier_id: '',
-                            purchased_date: ''
-                        };
-                    }
+                this.purchase = {
+                    errors: [],
+                    products: [],
+                    total_amount: 0,
+                    received_amount: 0,
+                    discount_amount: 0,
+                    net_amount: 0,
+                    supplier_id: '',
+                    purchased_date: ''
+                };
+
+                this.$http.get('/supplier/1').then(response => {
+                    this.suppliers = response.data;
 
                     $('.purchase_list').fadeOut('', function () {
                         $('.purchase_form').fadeIn();
@@ -405,40 +356,35 @@
             },
 
             /**
-             * Show Purchase List
-             * 
-             * @return mixed
+             * Back To Purchase List
              */
             backToList() {
                 $('.purchase_form').fadeOut('', function () {
                     $('.purchase_list').fadeIn();
+                    this.showDetail = true;
                 });
             },
 
             /**
-             * Add Product Modal
+             * Show Product Model
              */
             showProductForm() {
-                this.product = { id: 0, quantity: 0, price: 0, errors: [] };
+                this.product = {
+                    quantity: 0,
+                    price: 0,
+                    id: '',
+                    errors: []
+                };
 
-                this.$http.get('product/1').then(response => {
+                this.$http.get('/product/1').then(response => {
                     this.products = response.data;
+
                     $('#product_form').modal('show');
                 });
             },
 
             /**
-             * Show Purchase Detail
-             */
-            showDetail(purchase) {
-                this.purchase = purchase;
-                this.purchase.errors = [];
-
-                $('#detail_modal').modal('show');
-            },
-
-            /**
-             * Add Products to Purchase
+             * Add Product To Purchase Products
              */
             addProduct() {
                 this.product.errors = [];
@@ -457,6 +403,26 @@
             },
 
             /**
+             * Update the Product Name
+             */
+            getProductName(id) {
+                var vm = this;
+
+                this.products.find(function (obj) {
+                    if (obj.id == id) {
+                        vm.product.name = obj.name;
+                    }
+                });
+            },
+
+            /**
+             * Calc Amount
+             */
+            calcAmount() {
+                this.calc_amount;
+            },
+
+            /**
              * Remove Product
              */
             removeProduct(product) {
@@ -464,6 +430,7 @@
 
                 if (index >= 0) {
                     this.purchase.products.splice(index, 1);
+                    this.calc_amount;
                 }
             },
 
@@ -473,7 +440,7 @@
             savePurchase() {
                 this.purchase.errors = [];
 
-                if (this.purchase.supplier_id == '') {
+                if (this.purchase.supplier_id == '' || this.purchase.supplier_id == null) {
                     this.purchase.errors.push('Supplier is required.');
                     $('#supplier_id').focus();
 
@@ -489,18 +456,7 @@
                 }
             },
 
-        	/**
-        	 * Update means create or update
-        	 */
-        	update() {
-        		if (this.supplier.id > 0) {
-        			this.persistClient('put', '/supplier/' + this.supplier.id, this.supplier, '#modal_form');
-        		} else {
-        			this.persistClient('post', '/supplier', this.supplier, '#modal_form');
-        		}
-        	},
-
-        	 /**
+            /**
              * Persist the client to storage using the given form.
              */
             persistClient(method, uri, form, modal) {
@@ -509,7 +465,7 @@
                 this.$http[method](uri, form)
                     .then(response => {
                         this.getPurchases();
-                    	this.backToList();
+                        this.backToList();
 
                         form.errors = [];
 
@@ -526,37 +482,35 @@
             },
 
             /**
-             * Get the Product name
-             */
-            getProductName(product_id) {
-                var vm = this;
-                this.products.find(function (obj) {
-                    if (obj.id == product_id) {
-                        vm.product.name = obj.name;
-                    }
-                });
-            },
-
-            /**
              * Custom Date Format
              */
             getCustomDateFormat(date) {
                 return moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
             },
 
-            destroy(purchase) {
-            	var vm = this;
+            /**
+             * Show Purchase Detail
+             */
+            showDetailProducts(purchase) {
+                this.purchase = purchase;
+                this.purchase.errors = [];
 
-            	swal({
-            		title: 'Are you sure?',
-            		type: 'warning',
-            		showCancelButton: true,
-            		confirmButtonText: 'Yes, delete it!'
-            	}).then(function () {
-            		vm.$http.delete('/purchase/' + purchase.id).then(response => {
-            			vm.getPurchases();
-            		});
-            	}, function () {});
+                $('#detail_modal').modal('show');
+            },
+
+            destroy(purchase) {
+                var vm = this;
+
+                swal({
+                    title: 'Are you sure?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!'
+                }).then(function () {
+                    vm.$http.delete('/purchase/' + purchase.id).then(response => {
+                        vm.getPurchases();
+                    });
+                }, function () {});
             }
         },
 
@@ -565,10 +519,12 @@
                 var vm = this;
                 this.purchase.total_amount = 0;
 
-                this.purchase.products.forEach(function (obj) {
-                    vm.purchase.total_amount += (obj.price * obj.quantity);
-                });
-
+                if (this.purchase.products.length > 0) {
+                    this.purchase.products.forEach(function (obj) {
+                        vm.purchase.total_amount += (obj.price * obj.quantity);
+                    });    
+                }
+                
                 this.purchase.received_amount == '' ? this.purchase.received_amount = 0 : '';
                 this.purchase.discount_amount == '' ? this.purchase.discount_amount = 0 : '';
 

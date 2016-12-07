@@ -31,3 +31,5 @@ Route::resource('supplier', 'SupplierController', ['except' => ['create', 'edit'
 Route::resource('customer', 'CustomerController', ['except' => ['create', 'edit']]);
 
 Route::resource('purchase', 'PurchaseController', ['except' => ['create', 'edit']]);
+
+Route::resource('sale', 'SaleController', ['except' => ['create', 'edit']]);
